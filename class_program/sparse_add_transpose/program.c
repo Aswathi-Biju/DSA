@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAX 100
+#define MAX 10
 
 void inputSparseMatrix(int r, int c, int x[r][c]) {
     printf("Enter the values of sparse matrix (%dx%d):\n", r, c);
@@ -157,4 +157,3 @@ int main() {
     
     return 0;
 }
-

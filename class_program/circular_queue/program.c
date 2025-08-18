@@ -66,6 +66,7 @@ int main() {
                 display();
                 break;
             case 4:
+                printf("Exiting...\n");
                 return 0;
             default:
                 printf("Invalid choice\n");

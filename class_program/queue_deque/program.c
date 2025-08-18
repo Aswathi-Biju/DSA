@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define MAX 10
+#define MAX 3
 
 int queue[MAX];
 int front = -1, rear = -1;
@@ -175,6 +175,7 @@ int main() {
                 deque_menu();
                 break;
             case 3:
+                printf("Exiting...\n");
                 return 0;
             default:
                 printf("Invalid choice\n");

@@ -8,8 +8,12 @@
 char stack[MAX];
 int top = -1;
 
-int evalStack[MAX];
-int evalTop = -1;
+int precedence(char c) {
+    if (c == '^') return 3;
+    if (c == '*' || c == '/') return 2;
+    if (c == '+' || c == '-') return 1;
+    return 0;
+}
 
 void push(char c) {
     if (top == MAX - 1) {
@@ -31,11 +35,8 @@ char peek() {
     return stack[top];
 }
 
-int precedence(char c) {
-    if (c == '^') return 3;
-    if (c == '*' || c == '/') return 2;
-    if (c == '+' || c == '-') return 1;
-    return 0;
+int isOperand(char ch) {
+    return ( (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z') || (ch >= '0' && ch <= '9') );
 }
 
 void infixToPostfix(char infix[], char postfix[]) {
@@ -45,7 +46,7 @@ void infixToPostfix(char infix[], char postfix[]) {
     for (i = 0; infix[i] != '\0'; i++) {
         ch = infix[i];
 
-        if (isalnum(ch)) {  
+        if (isOperand(ch)) {  
             postfix[k++] = ch;  
         } 
         else if (ch == '(') {
@@ -72,60 +73,15 @@ void infixToPostfix(char infix[], char postfix[]) {
     postfix[k] = '\0'; 
 }
 
-void evalPush(int n) {
-    evalStack[++evalTop] = n;
-}
-
-int evalPop() {
-    return evalStack[evalTop--];
-}
-
-int evaluatePostfix(char postfix[]) {
-    int i, op1, op2;
-    char ch;
-
-    for (i = 0; postfix[i] != '\0'; i++) {
-        ch = postfix[i];
-
-        if (isalnum(ch)) {
-            int val;
-            printf("Enter value of %c: ", ch);
-            scanf("%d", &val);
-            evalPush(val);
-        } else {
-            op2 = evalPop();
-            op1 = evalPop();
-
-            switch (ch) {
-                case '+': evalPush(op1 + op2); break;
-                case '-': evalPush(op1 - op2); break;
-                case '*': evalPush(op1 * op2); break;
-                case '/': evalPush(op1 / op2); break;
-                case '^': {
-                    int res = 1;
-                    for (int j = 0; j < op2; j++) res *= op1;
-                    evalPush(res);
-                    break;
-                }
-            }
-        }
-    }
-
-    return evalPop();
-}
-
 int main() {
     char infix[MAX], postfix[MAX];
 
-    printf("Enter infix expression (use variables like a,b,c): ");
+    printf("Enter infix expression (use variables like (a or A): ");
     scanf("%s", infix);
 
     infixToPostfix(infix, postfix);
 
     printf("Postfix Expression: %s\n", postfix);
-
-    int result = evaluatePostfix(postfix);
-    printf("Result: %d\n", result);
 
     return 0;
 }

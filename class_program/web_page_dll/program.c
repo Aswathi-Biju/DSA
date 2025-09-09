@@ -63,6 +63,7 @@ int main() {
     char url[50];
     head = tail = current = NULL; 
     while (1) {
+        printf("\n---Navigation Menu---");
         printf("\n1. Visit a new page\n2. Go back\n3. Go forward\n4. Display current page\n5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);

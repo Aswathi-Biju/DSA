@@ -1,36 +1,14 @@
 #include <stdio.h>
 
-int binarySearch(int arr[], int size, int target, int *steps) {
-    int low = 0, high = size - 1;
-    (*steps)++; // Initialization
-
-    while (low <= high) {
-        (*steps)++; // Loop condition
-        int mid = low + (high - low) / 2;
-        (*steps)++; // Mid calculation
-
-        if (arr[mid] == target) {
-            (*steps)++; // Comparison
-            return mid;
-        } else if (arr[mid] < target) {
-            (*steps)++; // Comparison
-            low = mid + 1;
-        } else {
-            (*steps)++; // Comparison
-            high = mid - 1;
-        }
-    }
-    (*steps)++; // Loop exit
-    return -1;
-}
-
 int main() {
-    int size, target, steps = 0;
+    int size, target, steps = 0, low = 0, high, result = -1;
 
     printf("Enter the size of the array: ");
     scanf("%d", &size);
 
     int arr[size];
+    high = size - 1;
+
     printf("Enter %d elements of the sorted array:\n", size);
     for (int i = 0; i < size; i++) {
         scanf("%d", &arr[i]);
@@ -39,7 +17,22 @@ int main() {
     printf("Enter the target element to search for: ");
     scanf("%d", &target);
 
-    int result = binarySearch(arr, size, target, &steps);
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        steps++;  
+        if (arr[mid] == target) {
+            result = mid;
+            break;
+        }
+
+        steps++;  
+        if (arr[mid] < target) {
+            low = mid + 1;
+        } else {
+            high = mid - 1;
+        }
+    }
 
     if (result != -1) {
         printf("Element %d found at index %d\n", target, result);
@@ -47,9 +40,9 @@ int main() {
         printf("Element %d not found in the array.\n", target);
     }
 
-    int space = sizeof(int) * size + 4 * sizeof(int); // arr + size, target, steps, and result
+    int space = sizeof(arr) + 6 * sizeof(int);
     printf("Space complexity = %d bytes\n", space);
-    printf("Time complexity = %d units\n", steps);
+    printf("Time complexity (approx) = %d steps\n", steps);
 
     return 0;
 }
